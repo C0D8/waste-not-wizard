@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus } from "lucide-react";
+import { Plus, CircleCheck, Circle, CircleAlert } from "lucide-react";
 
 const mockProdutos = [
   {
@@ -29,6 +29,20 @@ const mockProdutos = [
 const ListarProdutos = () => {
   const formatarData = (data: string) => {
     return new Date(data).toLocaleDateString("pt-BR");
+  };
+
+  const getStatusIcon = (dataValidade: string) => {
+    const hoje = new Date();
+    const validade = new Date(dataValidade);
+    const diasAteVencer = Math.ceil((validade.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diasAteVencer <= 0) {
+      return <CircleAlert className="w-4 h-4 text-destructive" />;
+    } else if (diasAteVencer <= 7) {
+      return <Circle className="w-4 h-4 text-warning" />;
+    } else {
+      return <CircleCheck className="w-4 h-4 text-primary" />;
+    }
   };
 
   return (
@@ -52,6 +66,7 @@ const ListarProdutos = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Status</TableHead>
               <TableHead>Nome</TableHead>
               <TableHead>Data da Compra</TableHead>
               <TableHead>Data de Validade</TableHead>
@@ -60,6 +75,9 @@ const ListarProdutos = () => {
           <TableBody>
             {mockProdutos.map((produto) => (
               <TableRow key={produto.id}>
+                <TableCell className="w-[50px]">
+                  {getStatusIcon(produto.dataValidade)}
+                </TableCell>
                 <TableCell>{produto.nome}</TableCell>
                 <TableCell>{formatarData(produto.dataCompra)}</TableCell>
                 <TableCell>{formatarData(produto.dataValidade)}</TableCell>
