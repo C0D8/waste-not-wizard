@@ -14,7 +14,7 @@ export const Hero = () => {
       </p>
       <div className="space-x-4">
         <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-          <Link to="/cadastro">Começar Agora</Link>
+          <Link to="/produtos">Começar Agora</Link>
         </Button>
         <Button
           asChild
