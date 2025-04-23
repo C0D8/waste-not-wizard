@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, CircleCheck, Circle, CircleAlert } from "lucide-react";
+import { Plus, CircleCheck, Circle, CircleAlert, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const mockProdutos = [
   {
@@ -45,6 +50,14 @@ const ListarProdutos = () => {
     }
   };
 
+  const handleRemover = (id: number) => {
+    console.log('Removendo produto:', id);
+  };
+
+  const handleEditar = (id: number) => {
+    console.log('Editando produto:', id);
+  };
+
   return (
     <div className="container py-10">
       <div className="flex justify-between items-center mb-8">
@@ -70,6 +83,7 @@ const ListarProdutos = () => {
               <TableHead>Nome</TableHead>
               <TableHead>Data da Compra</TableHead>
               <TableHead>Data de Validade</TableHead>
+              <TableHead className="w-[50px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,6 +95,26 @@ const ListarProdutos = () => {
                 <TableCell>{produto.nome}</TableCell>
                 <TableCell>{formatarData(produto.dataCompra)}</TableCell>
                 <TableCell>{formatarData(produto.dataValidade)}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleEditar(produto.id)}>
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleRemover(produto.id)}
+                        className="text-destructive"
+                      >
+                        Remover
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
