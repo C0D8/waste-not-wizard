@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, CircleCheck, Circle, CircleAlert, MoreHorizontal } from "lucide-react";
+import { Plus, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +31,13 @@ const mockProdutos = [
     dataValidade: "2024-04-28",
     quantidade: 2,
   },
+  {
+    id: 3,
+    nome: "Tomate",
+    dataCompra: "2025-05-24",
+    dataValidade: "2025-06-12",
+    quantidade: 8,
+  },
 ];
 
 const ListarProdutos = () => {
@@ -39,19 +45,19 @@ const ListarProdutos = () => {
     return new Date(data).toLocaleDateString("pt-BR");
   };
 
-  const getStatusIcon = (dataValidade: string, quantidade: number) => {
+  const getStatusText = (dataValidade: string, quantidade: number) => {
     const hoje = new Date();
     const validade = new Date(dataValidade);
     const diasAteVencer = Math.ceil((validade.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
 
     if (quantidade <= 2) {
-      return <CircleAlert className="w-4 h-4 text-destructive" />;
+      return <span className="text-destructive font-medium">Estoque baixo!</span>;
     } else if (diasAteVencer <= 0) {
-      return <CircleAlert className="w-4 h-4 text-destructive" />;
+      return <span className="text-destructive font-medium">Vencido!</span>;
     } else if (diasAteVencer <= 7) {
-      return <Circle className="w-4 h-4 text-warning" />;
+      return <span className="text-warning font-medium">Próximo ao vencimento!</span>;
     } else {
-      return <CircleCheck className="w-4 h-4 text-primary" />;
+      return <span className="text-primary font-medium">OK</span>;
     }
   };
 
@@ -95,8 +101,8 @@ const ListarProdutos = () => {
           <TableBody>
             {mockProdutos.map((produto) => (
               <TableRow key={produto.id}>
-                <TableCell className="w-[50px]">
-                  {getStatusIcon(produto.dataValidade, produto.quantidade)}
+                <TableCell>
+                  {getStatusText(produto.dataValidade, produto.quantidade)}
                 </TableCell>
                 <TableCell>{produto.nome}</TableCell>
                 <TableCell>{produto.quantidade}</TableCell>
@@ -132,4 +138,3 @@ const ListarProdutos = () => {
 };
 
 export default ListarProdutos;
-
